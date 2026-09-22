@@ -1,3 +1,4 @@
+import { getApiUrl } from "@/lib/api";
 import Hero from "@/components/Hero";
 import MovieRow from "@/components/MovieRow";
 import type { Movie } from "@/app/types/movies";
@@ -9,10 +10,9 @@ interface MoviesResponse {
 
 async function getMovies(category: string): Promise<MoviesResponse> {
   const response = await fetch(
-    `/api/movies?category=${category}`,
-    { cache: "no-store" }
-  );
-
+  getApiUrl(`/api/movies?category=${category}`),
+  { cache: "no-store" }
+);
   if (!response.ok) throw new Error(`Failed to fetch ${category}`);
   return response.json();
 }

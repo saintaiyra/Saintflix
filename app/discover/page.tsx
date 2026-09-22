@@ -1,3 +1,4 @@
+import { getApiUrl } from "@/lib/api";
 import Link from "next/link";
 
 interface Movie {
@@ -30,9 +31,9 @@ const genres = [
 export default async function DiscoverPage({ searchParams }: DiscoverPageProps) {
   const { genre = "28" } = await searchParams;
   const response = await fetch(
-    `/api/movies/discover?genre=${encodeURIComponent(genre)}`,
-    { cache: "no-store" }
-  );
+  getApiUrl(`/api/movies/discover?genre=${encodeURIComponent(genre)}`),
+  { cache: "no-store" }
+);
 
   if (!response.ok) throw new Error("Falha ao carregar filmes");
   const data: DiscoverResponse = await response.json();
