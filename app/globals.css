@@ -1,8 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f4ed;
+  --surface: #fffdf8;
+  --card: #ffffff;
+  --foreground: #17130d;
+  --muted: #756c5d;
+  --primary: #b88a2a;
+  --primary-strong: #9a6b16;
+  --border: #d8c49a;
+  --hero-overlay: rgba(247, 244, 237, 0.78);
+}
+
+[data-theme="dark"] {
+  --background: #07060b;
+  --surface: #0d0b13;
+  --card: #111019;
+  --foreground: #f3efff;
+  --muted: #aaa1bb;
+  --primary: #7c3aed;
+  --primary-strong: #9b67ff;
+  --border: #35254d;
+  --hero-overlay: rgba(7, 6, 11, 0.78);
 }
 
 @theme inline {
@@ -12,15 +31,41 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+  scroll-behavior: smooth;
 }
 
 body {
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 500ms ease, color 500ms ease;
+}
+
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--primary);
+  color: #fff;
+}
+
+.movie-row,
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.movie-row::-webkit-scrollbar,
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
