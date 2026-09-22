@@ -36,7 +36,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   }
 
   const response = await fetch(
-    `http://localhost:3000/api/movies/search?query=${encodeURIComponent(query)}`,
+    `/api/movies/search?query=${encodeURIComponent(query)}`,
     { cache: "no-store" }
   );
 

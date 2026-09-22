@@ -30,7 +30,7 @@ const genres = [
 export default async function DiscoverPage({ searchParams }: DiscoverPageProps) {
   const { genre = "28" } = await searchParams;
   const response = await fetch(
-    `http://localhost:3000/api/movies/discover?genre=${encodeURIComponent(genre)}`,
+    `/api/movies/discover?genre=${encodeURIComponent(genre)}`,
     { cache: "no-store" }
   );
 

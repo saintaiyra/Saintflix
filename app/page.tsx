@@ -9,7 +9,7 @@ interface MoviesResponse {
 
 async function getMovies(category: string): Promise<MoviesResponse> {
   const response = await fetch(
-    `http://localhost:3000/api/movies?category=${category}`,
+    `/api/movies?category=${category}`,
     { cache: "no-store" }
   );
 
