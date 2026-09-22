@@ -13,7 +13,7 @@ type ApiMovie = Movie & {
 export default async function MoviePage({ params }: MoviePageProps) {
   const { id } = await params;
 
-  const response = await fetch(`http://localhost:3000/api/movies/${id}`, {
+  const response = await fetch(`/api/movies/${id}`, {
     cache: "no-store",
   });
 
@@ -40,7 +40,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
     vote_average: data.vote_average ?? 0,
   };
 
-  const similarResponse = await fetch(`http://localhost:3000/api/movies/${id}/similar`, {
+  const similarResponse = await fetch(`/api/movies/${id}/similar`, {
     cache: "no-store",
   });
   const similarData = similarResponse.ok ? await similarResponse.json() : { results: [] };

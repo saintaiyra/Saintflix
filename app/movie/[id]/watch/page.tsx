@@ -15,7 +15,7 @@ type Movie = {
 
 export default async function WatchPage({ params }: WatchPageProps) {
   const { id } = await params;
-  const response = await fetch(`http://localhost:3000/api/movies/${id}`, { cache: "no-store" });
+  const response = await fetch(`/api/movies/${id}`, { cache: "no-store" });
 
   if (!response.ok) {
     return (
