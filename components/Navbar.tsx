@@ -28,23 +28,23 @@ export default function Navbar() {
   }
 
   return (
-    <header className="fixed inset-x-0 top-0 z-[100] w-full">
+    <header className="fixed inset-x-0 top-0 z-100 w-full">
       <nav
         className="
           flex
-          h-[68px]
+          h-17
           w-full
           items-center
           border-b
-          border-[var(--border)]
-          bg-[var(--background)]/90
+          border-(--border)
+          bg-(--background)/90
           px-3
           backdrop-blur-xl
           transition-colors
           duration-500
-          sm:h-[70px]
+          sm:h-17.5
           sm:px-4
-          md:h-[74px]
+          md:h-18.5
           md:px-8
           lg:px-12
         "
@@ -60,7 +60,7 @@ export default function Navbar() {
             font-semibold
             leading-none
             tracking-[-1.2px]
-            text-[var(--primary)]
+            text-(--primary)
             transition-opacity
             hover:opacity-75
             sm:text-[22px]
@@ -110,8 +110,8 @@ export default function Navbar() {
                   md:text-sm
                   ${
                     active
-                      ? "text-[var(--foreground)]"
-                      : "text-[var(--foreground)]/60"
+                      ? "text-foreground"
+                      : "text-(--foreground)/60"
                   }
                 `}
               >
@@ -125,7 +125,7 @@ export default function Navbar() {
                       left-0
                       h-px
                       w-full
-                      bg-[var(--primary)]
+                      bg-(--primary)
                     "
                   />
                 )}
@@ -153,25 +153,25 @@ export default function Navbar() {
   className="
     flex
     h-8
-    w-[100px]
+    w-25
     shrink
     items-center
     overflow-hidden
     rounded-full
     border
-    border-[var(--border)]
-    bg-[var(--card)]/50
+    border-(--border)
+    bg-(--card)/50
     transition-all
     duration-300
-    focus-within:border-[var(--primary)]
+    focus-within:border-(--primary)
 
     sm:h-9
-    sm:w-[140px]
+    sm:w-35
 
     md:h-10
-    md:w-[200px]
+    md:w-50
 
-    lg:w-[250px]
+    lg:w-62.5
   "
 >
   <span
@@ -181,7 +181,7 @@ export default function Navbar() {
       items-center
       justify-center
       pl-2
-      text-[var(--muted)]
+      text-(--muted)
       sm:pl-3
     "
     aria-hidden="true"
@@ -211,9 +211,9 @@ export default function Navbar() {
       bg-transparent
       px-2
       text-[10px]
-      text-[var(--foreground)]
+      text-foreground
       outline-none
-      placeholder:text-[var(--muted)]
+      placeholder:text-(--muted)
 
       sm:px-2
       sm:text-xs

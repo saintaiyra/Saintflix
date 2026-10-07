@@ -11,7 +11,7 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggleTheme}
       aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--primary)] transition-all duration-300 hover:scale-105 hover:border-[var(--primary)]"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-(--border) bg-(--card) text-(--primary) transition-all duration-300 hover:scale-105 hover:border-(--primary)"
     >
       <span className="text-base" aria-hidden="true">
         {isDark ? "☀" : "☾"}

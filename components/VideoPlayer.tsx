@@ -84,7 +84,7 @@ export default function VideoPlayer({
       />
 
       {/* CONTROLES */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 opacity-0 transition group-hover:opacity-100">
+      <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/90 to-transparent p-6 opacity-0 transition group-hover:opacity-100">
 
         {/* PROGRESSO */}
         <input

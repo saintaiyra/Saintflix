@@ -42,8 +42,8 @@ export default function HeroBackground({
       <div
         className={`absolute inset-0 ${
           isDark
-            ? "bg-gradient-to-r from-[#05030a] via-[#05030a]/65 to-transparent"
-            : "bg-gradient-to-r from-white via-white/55 to-transparent"
+            ? "bg-linear-to-r from-[#05030a] via-[#05030a]/65 to-transparent"
+            : "bg-linear-to-r from-white via-white/55 to-transparent"
         }`}
       />
 
@@ -51,8 +51,8 @@ export default function HeroBackground({
       <div
         className={`absolute inset-0 ${
           isDark
-            ? "bg-gradient-to-t from-[#05030a] via-transparent to-[#05030a]/20"
-            : "bg-gradient-to-t from-white via-transparent to-white/10"
+            ? "bg-linear-to-t from-[#05030a] via-transparent to-[#05030a]/20"
+            : "bg-linear-to-t from-white via-transparent to-white/10"
         }`}
       />
 

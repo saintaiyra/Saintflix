@@ -36,7 +36,7 @@ export default function MyListButton({ movie }: { movie: Movie }) {
     <button
       type="button"
       onClick={toggleList}
-      className="rounded-full border border-[var(--border)] bg-[var(--card)]/70 px-6 py-3 font-semibold text-[var(--foreground)] backdrop-blur-sm transition-all hover:border-[var(--primary)] hover:text-[var(--primary)]"
+      className="rounded-full border border-(--border) bg-(--card)/70 px-6 py-3 font-semibold text-foreground backdrop-blur-sm transition-all hover:border-(--primary) hover:text-(--primary)"
     >
       {isInList ? "✓ Na minha lista" : "+ Minha Lista"}
     </button>

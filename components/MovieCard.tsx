@@ -53,9 +53,9 @@ export default function MovieCard({ movie }: MovieCardProps) {
   }
 
   return (
-    <article className="group/card relative w-[170px] shrink-0 sm:w-[180px] md:w-[195px]">
+    <article className="group/card relative w-42.5 shrink-0 sm:w-45 md:w-48.75">
       <Link href={`/movie/${movie.id}`} className="block">
-        <div className="relative aspect-[2/3] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] shadow-[0_12px_35px_rgba(0,0,0,0.10)] transition-all duration-500 group-hover/card:-translate-y-2 group-hover/card:shadow-[0_20px_50px_rgba(0,0,0,0.18)]">
+        <div className="relative aspect-2/3 overflow-hidden rounded-xl border border-(--border) bg-(--card) shadow-[0_12px_35px_rgba(0,0,0,0.10)] transition-all duration-500 group-hover/card:-translate-y-2 group-hover/card:shadow-[0_20px_50px_rgba(0,0,0,0.18)]">
           {image ? (
             <img
               src={image}
@@ -64,12 +64,12 @@ export default function MovieCard({ movie }: MovieCardProps) {
               className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-110"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-sm text-[var(--muted)]">
+            <div className="flex h-full items-center justify-center text-sm text-(--muted)">
               Sem imagem
             </div>
           )}
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent opacity-0 transition-opacity duration-500 group-hover/card:opacity-100" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent opacity-0 transition-opacity duration-500 group-hover/card:opacity-100" />
 
           <div className="absolute inset-x-0 bottom-0 translate-y-3 px-3 pb-3 opacity-0 transition-all duration-500 group-hover/card:translate-y-0 group-hover/card:opacity-100">
             <p className="truncate text-sm font-semibold text-white">{movie.title}</p>
@@ -81,7 +81,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
         <button
           type="button"
           onClick={handleWatch}
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--primary)] bg-black/65 text-sm text-white backdrop-blur-md transition-all hover:scale-110 hover:bg-[var(--primary)]"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-(--primary) bg-black/65 text-sm text-white backdrop-blur-md transition-all hover:scale-110 hover:bg-(--primary)"
           aria-label={`Assistir ${movie.title}`}
         >
           ▶
@@ -90,7 +90,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
         <button
           type="button"
           onClick={handleMyList}
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--primary)] bg-black/65 text-sm text-white backdrop-blur-md transition-all hover:scale-110 hover:bg-[var(--primary)]"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-(--primary) bg-black/65 text-sm text-white backdrop-blur-md transition-all hover:scale-110 hover:bg-(--primary)"
           aria-label={isInList ? `Remover ${movie.title} da lista` : `Adicionar ${movie.title} à lista`}
         >
           {isInList ? "✓" : "+"}

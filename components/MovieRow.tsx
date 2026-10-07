@@ -23,18 +23,18 @@ export default function MovieRow({ title, movies }: MovieRowProps) {
   if (!movies?.length) return null;
 
   return (
-    <section className="relative bg-[var(--background)] px-6 pb-12 pt-7 text-[var(--foreground)] transition-colors duration-500 md:px-12 lg:px-16">
+    <section className="relative bg-background px-6 pb-12 pt-7 text-foreground transition-colors duration-500 md:px-12 lg:px-16">
       <div className="mb-6 flex items-end justify-between">
         <div className="flex items-center gap-3">
-          <span className="h-7 w-1 rounded-full bg-[var(--primary)]" />
-          <h2 className="text-xl font-semibold tracking-tight text-[var(--foreground)] md:text-2xl">
+          <span className="h-7 w-1 rounded-full bg-(--primary)" />
+          <h2 className="text-xl font-semibold tracking-tight text-foreground md:text-2xl">
             {title}
           </h2>
         </div>
 
         <button
           type="button"
-          className="hidden text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--muted)] transition-colors hover:text-[var(--primary)] md:block"
+          className="hidden text-[10px] font-medium uppercase tracking-[0.25em] text-(--muted) transition-colors hover:text-(--primary) md:block"
         >
           Ver todos
         </button>
@@ -45,7 +45,7 @@ export default function MovieRow({ title, movies }: MovieRowProps) {
           type="button"
           onClick={scrollLeft}
           aria-label={`Voltar em ${title}`}
-          className="absolute left-0 top-1/2 z-20 hidden h-12 w-10 -translate-y-1/2 items-center justify-center rounded-r-xl border border-[var(--border)] bg-[var(--card)]/90 text-2xl text-[var(--foreground)] opacity-0 shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-[var(--primary)] hover:bg-[var(--primary)] hover:text-white group-hover:opacity-100 md:flex"
+          className="absolute left-0 top-1/2 z-20 hidden h-12 w-10 -translate-y-1/2 items-center justify-center rounded-r-xl border border-(--border) bg-(--card)/90 text-2xl text-foreground opacity-0 shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-(--primary) hover:bg-(--primary) hover:text-white group-hover:opacity-100 md:flex"
         >
           ‹
         </button>
@@ -60,7 +60,7 @@ export default function MovieRow({ title, movies }: MovieRowProps) {
           type="button"
           onClick={scrollRight}
           aria-label={`Avançar em ${title}`}
-          className="absolute right-0 top-1/2 z-20 hidden h-12 w-10 -translate-y-1/2 items-center justify-center rounded-l-xl border border-[var(--border)] bg-[var(--card)]/90 text-2xl text-[var(--foreground)] opacity-0 shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-[var(--primary)] hover:bg-[var(--primary)] hover:text-white group-hover:opacity-100 md:flex"
+          className="absolute right-0 top-1/2 z-20 hidden h-12 w-10 -translate-y-1/2 items-center justify-center rounded-l-xl border border-(--border) bg-(--card)/90 text-2xl text-foreground opacity-0 shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-(--primary) hover:bg-(--primary) hover:text-white group-hover:opacity-100 md:flex"
         >
           ›
         </button>
