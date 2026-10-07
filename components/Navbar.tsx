@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 
@@ -10,6 +10,19 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const [query, setQuery] = useState("");
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const links = [
     { href: "/", label: "Início" },
@@ -30,24 +43,29 @@ export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-100 w-full">
       <nav
-        className="
+        className={`
           flex
           h-17
           w-full
           items-center
           border-b
           border-(--border)
-          bg-(--background)/90
           px-3
-          backdrop-blur-xl
-          transition-colors
+          transition-all
           duration-500
+
+          ${
+            scrolled
+              ? "bg-transparent backdrop-blur-none"
+              : "bg-(--background)/90 backdrop-blur-xl"
+          }
+
           sm:h-17.5
           sm:px-4
           md:h-18.5
           md:px-8
           lg:px-12
-        "
+        `}
       >
         {/* LOGO */}
 
@@ -146,82 +164,82 @@ export default function Navbar() {
             sm:gap-3
           "
         >
-          {/* BUSCA — DESKTOP */}
+          {/* BUSCA */}
 
           <form
-  onSubmit={handleSearch}
-  className="
-    flex
-    h-8
-    w-25
-    shrink
-    items-center
-    overflow-hidden
-    rounded-full
-    border
-    border-(--border)
-    bg-(--card)/50
-    transition-all
-    duration-300
-    focus-within:border-(--primary)
+            onSubmit={handleSearch}
+            className="
+              flex
+              h-8
+              w-25
+              shrink
+              items-center
+              overflow-hidden
+              rounded-full
+              border
+              border-(--border)
+              bg-(--card)/50
+              transition-all
+              duration-300
+              focus-within:border-(--primary)
 
-    sm:h-9
-    sm:w-35
+              sm:h-9
+              sm:w-35
 
-    md:h-10
-    md:w-50
+              md:h-10
+              md:w-50
 
-    lg:w-62.5
-  "
->
-  <span
-    className="
-      flex
-      shrink-0
-      items-center
-      justify-center
-      pl-2
-      text-(--muted)
-      sm:pl-3
-    "
-    aria-hidden="true"
-  >
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
-    >
-      <circle cx="11" cy="11" r="7" />
-      <path d="m20 20-4-4" />
-    </svg>
-  </span>
+              lg:w-62.5
+            "
+          >
+            <span
+              className="
+                flex
+                shrink-0
+                items-center
+                justify-center
+                pl-2
+                text-(--muted)
+                sm:pl-3
+              "
+              aria-hidden="true"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.7"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-4-4" />
+              </svg>
+            </span>
 
-  <input
-    type="search"
-    value={query}
-    onChange={(event) => setQuery(event.target.value)}
-    placeholder="Buscar..."
-    className="
-      h-full
-      w-full
-      min-w-0
-      bg-transparent
-      px-2
-      text-[10px]
-      text-foreground
-      outline-none
-      placeholder:text-(--muted)
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Buscar..."
+              className="
+                h-full
+                w-full
+                min-w-0
+                bg-transparent
+                px-2
+                text-[10px]
+                text-foreground
+                outline-none
+                placeholder:text-(--muted)
 
-      sm:px-2
-      sm:text-xs
+                sm:px-2
+                sm:text-xs
 
-      md:text-sm
-    "
-  />
-</form>
+                md:text-sm
+              "
+            />
+          </form>
 
           {/* TEMA */}
 
