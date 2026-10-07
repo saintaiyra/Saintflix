@@ -45,7 +45,7 @@ export default function Navbar() {
       <nav
         className={`
           flex
-          h-17
+          h-14
           w-full
           items-center
           border-b
@@ -60,9 +60,9 @@ export default function Navbar() {
               : "bg-(--background)/90 backdrop-blur-xl"
           }
 
-          sm:h-17.5
+          sm:h-16
           sm:px-4
-          md:h-18.5
+          md:h-18
           md:px-8
           lg:px-12
         `}
@@ -74,14 +74,15 @@ export default function Navbar() {
           className="
             shrink-0
             whitespace-nowrap
-            text-[19px]
+            text-[17px]
             font-semibold
             leading-none
-            tracking-[-1.2px]
+            tracking-[-1px]
             text-(--primary)
             transition-opacity
             hover:opacity-75
-            sm:text-[22px]
+
+            sm:text-[21px]
             md:text-[26px]
             lg:text-[29px]
           "
@@ -98,10 +99,11 @@ export default function Navbar() {
             min-w-0
             shrink
             items-center
-            gap-2
-            overflow-visible
+            gap-1.5
+
             sm:ml-5
             sm:gap-3
+
             md:ml-8
             md:gap-7
           "
@@ -120,12 +122,15 @@ export default function Navbar() {
                   relative
                   whitespace-nowrap
                   py-2
-                  text-[11px]
                   leading-none
                   transition-colors
                   duration-200
-                  sm:text-[12px]
+
+                  text-[9px]
+
+                  sm:text-[11px]
                   md:text-sm
+
                   ${
                     active
                       ? "text-foreground"
@@ -160,8 +165,11 @@ export default function Navbar() {
             flex
             shrink-0
             items-center
-            gap-2
-            sm:gap-3
+            gap-1.5
+
+            sm:gap-2
+
+            md:gap-3
           "
         >
           {/* BUSCA */}
@@ -170,8 +178,8 @@ export default function Navbar() {
             onSubmit={handleSearch}
             className="
               flex
-              h-8
-              w-25
+              h-7
+              w-20
               shrink
               items-center
               overflow-hidden
@@ -183,8 +191,8 @@ export default function Navbar() {
               duration-300
               focus-within:border-(--primary)
 
-              sm:h-9
-              sm:w-35
+              sm:h-8
+              sm:w-32
 
               md:h-10
               md:w-50
@@ -200,13 +208,14 @@ export default function Navbar() {
                 justify-center
                 pl-2
                 text-(--muted)
+
                 sm:pl-3
               "
               aria-hidden="true"
             >
               <svg
-                width="14"
-                height="14"
+                width="13"
+                height="13"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -227,8 +236,8 @@ export default function Navbar() {
                 w-full
                 min-w-0
                 bg-transparent
-                px-2
-                text-[10px]
+                px-1.5
+                text-[9px]
                 text-foreground
                 outline-none
                 placeholder:text-(--muted)
@@ -243,7 +252,16 @@ export default function Navbar() {
 
           {/* TEMA */}
 
-          <ThemeToggle />
+          <div
+            className="
+              scale-75
+
+              sm:scale-90
+              md:scale-100
+            "
+          >
+            <ThemeToggle />
+          </div>
         </div>
       </nav>
     </header>
