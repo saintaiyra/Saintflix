@@ -18,7 +18,19 @@ const UserSchema = new mongoose.Schema({
   profiles: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Profile'
-  }]
+  }],
+  // Stripe
+  stripeCustomerId: {
+    type: String
+  },
+  // Configurações
+  emailVerified: {
+    type: Boolean,
+    default: false
+  },
+  avatar: {
+    type: String
+  }
 }, {
   timestamps: true
 });
@@ -33,6 +45,19 @@ UserSchema.pre('save', async function(next) {
 // Método para comparar senhas
 UserSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// Método para obter dados públicos do usuário
+UserSchema.methods.toPublicJSON = function() {
+  return {
+    id: this._id,
+    name: this.name,
+    email: this.email,
+    profiles: this.profiles,
+    avatar: this.avatar,
+    emailVerified: this.emailVerified,
+    createdAt: this.createdAt
+  };
 };
 
 module.exports = mongoose.model('User', UserSchema);

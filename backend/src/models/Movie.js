@@ -33,6 +33,17 @@ const MovieSchema = new mongoose.Schema({
   videoUrl: {
     type: String,
     required: true
+  },
+  // Preços personalizados por filme (em centavos)
+  rentalPrice: {
+    type: Number,
+    default: 1490, // R$ 14,90
+    min: 0
+  },
+  purchasePrice: {
+    type: Number,
+    default: 4990, // R$ 49,90
+    min: 0
   }
 }, {
   timestamps: true
