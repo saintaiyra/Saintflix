@@ -1,887 +1,206 @@
 "use client";
 
-
-
 import { useRouter } from "next/navigation";
-
-import { useEffect, useState } from "react";
-
+import { useEffect } from "react";
 import type { Movie } from "@/app/types/movies";
 
 import HeroBackground from "./HeroBackground";
-
-
+import { useMyList } from "@/hooks/useMyList";
 
 interface HeroProps {
-
   movie?: Movie;
-
 }
 
-
-
 export default function Hero({ movie }: HeroProps) {
-
   const router = useRouter();
+  const { isInList, toggle, isLoaded } = useMyList();
 
-  const [isInList, setIsInList] = useState(false);
-
-
-
-  useEffect(() => {
-
-    if (!movie) {
-
-      setIsInList(false);
-
-      return;
-
-    }
-
-
-
-    const saved = localStorage.getItem("my-list");
-
-
-
-    if (!saved) {
-
-      setIsInList(false);
-
-      return;
-
-    }
-
-
-
-    try {
-
-      const movies: Movie[] = JSON.parse(saved);
-
-
-
-      setIsInList(
-
-        movies.some((item) => item.id === movie.id)
-
-      );
-
-    } catch {
-
-      setIsInList(false);
-
-    }
-
-  }, [movie]);
-
-
+  const movieIsInList = movie ? isInList(movie.id) : false;
 
   if (!movie) {
-
     return (
-
-      <section className="relative flex min-h-[70vh] items-center overflow-hidden bg-background px-6 md:px-12">
-
-        <p className="text-(--foreground)/60">
-
-          Nenhum filme disponível.
-
-        </p>
-
+      <section className="relative flex min-h-[50vh] items-center overflow-hidden bg-background px-6 md:px-12">
+        <p className="text-(--foreground)/60">Nenhum filme disponível.</p>
       </section>
-
     );
-
   }
-
-
 
   function handleMyList() {
-
-    // Garante para o TypeScript que movie existe
-
-    if (!movie) {
-
-      return;
-
-    }
-
-
-
-    const saved = localStorage.getItem("my-list");
-
-
-
-    let movies: Movie[] = [];
-
-
-
-    try {
-
-      movies = saved ? JSON.parse(saved) : [];
-
-    } catch {
-
-      movies = [];
-
-    }
-
-
-
-    const alreadyExists = movies.some(
-
-      (item) => item.id === movie.id
-
-    );
-
-
-
-    if (alreadyExists) {
-
-      const updated = movies.filter(
-
-        (item) => item.id !== movie.id
-
-      );
-
-
-
-      localStorage.setItem(
-
-        "my-list",
-
-        JSON.stringify(updated)
-
-      );
-
-
-
-      setIsInList(false);
-
-      return;
-
-    }
-
-
-
-    const updated = [...movies, movie];
-
-
-
-    localStorage.setItem(
-
-      "my-list",
-
-      JSON.stringify(updated)
-
-    );
-
-
-
-    setIsInList(true);
-
+    if (!movie) return;
+    toggle(movie);
   }
 
-
-
   return (
-
-    <section className="relative min-h-[72vh] overflow-hidden bg-background">
-
-
-
-      {/* =====================================================*
-
-*          IMAGEM DE FUNDO*
-
-*      ====================================================== */}
-
-
-
-      <HeroBackground
-
-        backdropPath={movie.backdrop_path}
-
-        title={movie.title}
-
-      />
-
-
-
-      {/* =====================================================*
-
-*          DECORAÇÃO LATERAL*
-
-*      ====================================================== */}
-
-
+    <section className="relative min-h-[56vh] overflow-hidden bg-background">
+      <HeroBackground backdropPath={movie.backdrop_path} title={movie.title} />
 
       <div
-
         className="
-
           absolute
-
           left-0
-
           top-1/2
-
           hidden
-
           h-28
-
           w-px
-
           -translate-y-1/2
-
           bg-(--primary)
-
           md:block
-
         "
-
       />
 
-
-
-      {/* =====================================================*
-
-*          CONTEÚDO PRINCIPAL*
-
-*      ====================================================== */}
-
-
-
       <div
-
         className="
-
           relative
-
           z-10
-
           mx-auto
-
           flex
-
-          min-h-[72vh]
-
-          max-w-7xl
-
+          min-h-[56vh]
+          max-w-none
           items-end
-
           px-6
-
           pb-24
-
           pt-32
-
           md:px-12
-
           lg:px-16
-
         "
-
       >
-
         <div className="w-full max-w-3xl">
-
-
-
-          {/* =================================================*
-
-*              INDICADOR LATERAL*
-
-*          ================================================== */}
-
-
-
           <div
-
             className="
-
               mb-8
-
               flex
-
               items-center
-
               gap-4
-
               text-xs
-
               font-medium
-
               tracking-[0.35em]
-
               text-(--primary)
-
             "
-
           >
-
             <span>01</span>
-
-
-
-            <span className="text-(--primary)/30">
-
-              /
-
-            </span>
-
-
-
-            <span className="text-(--foreground)/40">
-
-              04
-
-            </span>
-
+            <span className="text-(--primary)/30">/</span>
+            <span className="text-(--foreground)/40">04</span>
           </div>
 
-
-
-          {/* =================================================*
-
-*              LABEL*
-
-*          ================================================== */}
-
-
-
-          <div
-
-            className="
-
-              mb-4
-
-              text-[10px]
-
-              font-semibold
-
-              uppercase
-
-              tracking-[0.45em]
-
-              text-(--primary)
-
-            "
-
-          >
-
+          <div className="mb-4 text-[10px] font-semibold uppercase tracking-[0.45em] text-(--primary)">
             Em destaque
-
           </div>
-
-
-
-          {/* =================================================*
-
-*              TÍTULO*
-
-*          ================================================== */}
-
-
 
           <h1
-
             className="
-
               max-w-3xl
-
               text-5xl
-
               font-black
-
               leading-[0.92]
-
               tracking-[-0.04em]
-
               text-foreground
-
               md:text-7xl
-
               lg:text-[84px]
-
             "
-
           >
-
             {movie.title}
-
           </h1>
 
-
-
-          {/* =================================================*
-
-*              METADADOS*
-
-*          ================================================== */}
-
-
-
-          <div
-
-            className="
-
-              mt-6
-
-              flex
-
-              flex-wrap
-
-              items-center
-
-              gap-4
-
-              text-sm
-
-              text-(--foreground)/70
-
-            "
-
-          >
-
+          <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-(--foreground)/70">
             {movie.vote_average !== undefined && (
-
               <span className="font-semibold text-(--primary)">
-
                 ⭐ {movie.vote_average.toFixed(1)}
-
               </span>
-
             )}
 
-
-
-            <span className="text-(--primary)/40">
-
-              •
-
-            </span>
-
-
-
-            <span>
-
-              Filme
-
-            </span>
-
-
-
-            <span className="text-(--primary)/40">
-
-              •
-
-            </span>
-
-
-
-            <span>
-
-              Saintflix Original Selection
-
-            </span>
-
+            <span className="text-(--primary)/40">•</span>
+            <span>Filme</span>
+            <span className="text-(--primary)/40">•</span>
+            <span>Saintflix Original Selection</span>
           </div>
 
-
-
-          {/* =================================================*
-
-*              SINOPSE*
-
-*          ================================================== */}
-
-
-
-          <p
-
-            className="
-
-              mt-6
-
-              max-w-2xl
-
-              line-clamp-3
-
-              text-sm
-
-              leading-7
-
-              text-(--foreground)/70
-
-              md:text-base
-
-            "
-
-          >
-
-            {movie.overview ||
-
-              "Nenhuma descrição disponível."}
-
+          <p className="mt-6 max-w-2xl line-clamp-3 text-sm leading-7 text-(--foreground)/70 md:text-base">
+            {movie.overview || "Nenhuma descrição disponível."}
           </p>
 
-
-
-          {/* =================================================*
-
-*              BOTÕES*
-
-*          ================================================== */}
-
-
-
           <div className="mt-8 flex flex-wrap gap-3">
-
-
-
-            {/* ASSISTIR */}
-
-
-
             <button
-
               type="button"
-
-              onClick={() =>
-
-                router.push(
-
-                  `/movie/${movie.id}/watch`
-
-                )
-
-              }
-
+              onClick={() => router.push(`/movie/${movie.id}/watch`)}
               className="
-
                 flex
-
                 items-center
-
                 gap-2
-
                 rounded-full
-
                 bg-(--primary)
-
                 px-7
-
                 py-3.5
-
                 font-bold
-
                 text-white
-
                 shadow-[0_12px_35px_rgba(184,134,43,0.25)]
-
                 transition-all
-
                 duration-300
-
                 hover:scale-105
-
                 hover:brightness-110
-
               "
-
             >
-
-              ▶
-
-
-
-              <span>
-
-                Assistir agora
-
-              </span>
-
+              ▶ <span>Assistir agora</span>
             </button>
-
-
-
-            {/* MINHA LISTA */}
-
-
 
             <button
-
               type="button"
-
               onClick={handleMyList}
-
+              disabled={!isLoaded}
               className="
-
                 flex
-
                 items-center
-
                 gap-2
-
                 rounded-full
-
                 border
-
                 border-(--primary)/60
-
                 bg-(--background)/70
-
                 px-7
-
                 py-3.5
-
                 font-bold
-
                 text-(--primary)
-
                 backdrop-blur-sm
-
                 transition-all
-
                 duration-300
-
                 hover:scale-105
-
                 hover:bg-(--primary)
-
                 hover:text-white
-
+                disabled:opacity-50 disabled:cursor-not-allowed
               "
-
             >
-
-              <span className="text-lg">
-
-                +
-
-              </span>
-
-
-
-              <span>
-
-                {isInList
-
-                  ? "Na minha lista"
-
-                  : "Minha Lista"}
-
-              </span>
-
+              <span className="text-lg">+</span>
+              <span>{movieIsInList ? "Na minha lista" : "Minha Lista"}</span>
             </button>
-
-
-
           </div>
-
-
-
-          {/* =================================================*
-
-*              MARCA INFERIOR*
-
-*          ================================================== */}
-
-
 
           <div className="mt-10 flex items-center gap-4">
-
-
-
             <div className="h-px w-20 bg-(--primary)" />
-
-
-
-            <span
-
-              className="
-
-                text-[9px]
-
-                font-medium
-
-                uppercase
-
-                tracking-[0.45em]
-
-                text-(--foreground)/40
-
-              "
-
-            >
-
+            <span className="text-[9px] font-medium uppercase tracking-[0.45em] text-(--foreground)/40">
               Saintflix
-
             </span>
-
-
-
           </div>
-
-
-
         </div>
-
       </div>
 
-
-
-      {/* =====================================================*
-
-*          TEXTO DECORATIVO DO LADO DIREITO*
-
-*      ====================================================== */}
-
-
-
       <div
-
         className="
-
           absolute
-
           right-8
-
           top-1/2
-
           hidden
-
           -translate-y-1/2
-
           text-right
-
           md:block
-
         "
-
       >
-
-        <div
-
-          className="
-
-            border-r
-
-            border-(--primary)/40
-
-            pr-5
-
-            text-[10px]
-
-            uppercase
-
-            leading-6
-
-            tracking-[0.25em]
-
-            text-(--foreground)/60
-
-          "
-
-        >
-
-          <div>
-
-            Histórias
-
-          </div>
-
-
-
-          <div>
-
-            que ficam
-
-          </div>
-
-
-
-          <div>
-
-            com você
-
-          </div>
-
+        <div className="border-r border-(--primary)/40 pr-5 text-[10px] uppercase leading-6 tracking-[0.25em] text-(--foreground)/60">
+          <div>Histórias</div>
+          <div>que ficam</div>
+          <div>com você</div>
         </div>
-
       </div>
 
-
-
-      {/* =====================================================*
-
-*          TRANSIÇÃO ORGÂNICA PARA O MOVIEROW*
-
-*      ====================================================== */}
-
-
-
-      <div
-
-        className="
-
-          absolute
-
-          -bottom-px
-
-          left-1/2
-
-          z-20
-
-          h-20
-
-          w-[125%]
-
-          -translate-x-1/2
-
-          rounded-[50%_50%_0_0]
-
-          bg-background
-
-        "
-
-      />
-
-
-
-      {/* LINHA DOURADA/ROXA DA TRANSIÇÃO */}
-
-
-
-      <div
-
-        className="
-
-          absolute
-
-          bottom-10
-
-          left-1/2
-
-          z-30
-
-          h-px
-
-          w-32
-
-          -translate-x-1/2
-
-          bg-(--primary)/60
-
-        "
-
-      />
-
-
-
+      <div className="absolute -bottom-px left-1/2 z-20 h-20 w-[125%] -translate-x-1/2 rounded-[50%_50%_0_0] bg-background" />
+      <div className="absolute bottom-10 left-1/2 z-30 h-px w-32 -translate-x-1/2 bg-(--primary)/60" />
     </section>
-
   );
-
 }

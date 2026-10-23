@@ -1,7 +1,6 @@
 import { getApiUrl } from "@/lib/api";
-import MovieRow from "@/components/MovieRow";
 import Link from "next/link";
-import MyListButton from "@/components/MyListButton";
+import VideoPlayer from "@/components/VideoPlayer";
 import type { Movie } from "@/app/types/movies";
 
 type MoviePageProps = { params: Promise<{ id: string }> };
@@ -14,9 +13,10 @@ type ApiMovie = Movie & {
     url: string;
     embedUrl: string;
   } | null;
+  videoUrl?: string;
 };
 
-export default async function MoviePage({ params }: MoviePageProps) {
+export default async function WatchPage({ params }: MoviePageProps) {
   const { id } = await params;
 
   const response = await fetch(getApiUrl(`/api/movies/${id}`), {
@@ -51,111 +51,46 @@ export default async function MoviePage({ params }: MoviePageProps) {
     vote_average: data.vote_average ?? 0,
   };
 
-  const similarResponse = await fetch(
-    getApiUrl(`/api/movies/${id}/similar`),
-    {
-      cache: "no-store",
-    }
-  );
-
-  const similarData = similarResponse.ok
-    ? await similarResponse.json()
-    : { results: [] };
-
-  const similarMovies: Movie[] = (similarData.results ?? []).map(
-    (item: Movie) => ({
-      id: item.id,
-      title: item.title ?? "",
-      overview: item.overview ?? "",
-      backdrop_path: item.backdrop_path ?? null,
-      poster_path: item.poster_path ?? null,
-      vote_average: item.vote_average ?? 0,
-    })
-  );
-
-  const backdrop = movie.backdrop_path
-    ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
-    : null;
-
+  const videoUrl = data.videoUrl ?? `https://example.com/video/${movie.id}.mp4`;
   const poster = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : null;
 
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)] transition-colors duration-500">
-      <section className="relative min-h-[82vh] overflow-hidden bg-[var(--background)] pt-[74px]">
-        {backdrop && (
-          <img
-            src={backdrop}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover opacity-20"
-          />
-        )}
+      <div className="relative aspect-video w-full max-w-5xl mx-auto bg-black">
+        <VideoPlayer src={videoUrl} poster={poster ?? undefined} />
 
-        <div className="absolute inset-0 bg-[var(--hero-overlay)]" />
+        <Link
+          href={`/movie/${movie.id}`}
+          className="absolute top-4 left-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70"
+          aria-label="Voltar para detalhes"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </Link>
+      </div>
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)] via-[var(--background)]/90 to-transparent" />
+      <section className="mx-auto max-w-5xl px-5 py-10 md:px-10 lg:px-14">
+        <Link
+          href={`/movie/${movie.id}`}
+          className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-[var(--muted)] transition hover:text-[var(--primary)]"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          Voltar para detalhes
+        </Link>
 
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-transparent to-transparent" />
+        <h1 className="text-4xl font-black tracking-[-0.04em] md:text-5xl">
+          {movie.title}
+        </h1>
 
-        <div className="relative z-10 mx-auto flex min-h-[82vh] max-w-7xl items-end px-5 pb-24 pt-20 md:px-10 lg:px-14">
-          <div className="max-w-4xl">
-            {poster && (
-              <img
-                src={poster}
-                alt={movie.title}
-                className="mb-7 hidden w-36 rounded-xl border border-[var(--border)] shadow-2xl md:block"
-              />
-            )}
-
-            <p className="mb-4 text-[10px] uppercase tracking-[0.4em] text-[var(--primary)]">
-              Detalhes do filme
-            </p>
-
-            <h1 className="text-5xl font-black leading-[0.92] tracking-[-0.045em] md:text-7xl lg:text-[78px]">
-              {movie.title}
-            </h1>
-
-            <div className="mt-6 flex flex-wrap gap-4 text-sm text-[var(--muted)]">
-              {data.release_date && (
-                <span>{data.release_date.slice(0, 4)}</span>
-              )}
-
-              <span>⭐ {movie.vote_average.toFixed(1)}</span>
-
-              {data.trailer && (
-                <span className="text-[var(--primary)]">
-                  Trailer disponível
-                </span>
-              )}
-            </div>
-
-            <p className="mt-6 max-w-2xl leading-7 text-[var(--muted)]">
-              {movie.overview || "Nenhuma descrição disponível."}
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href={`/movie/${movie.id}/watch`}
-                className="rounded-full bg-[var(--primary)] px-7 py-3.5 font-bold text-white transition hover:scale-105 hover:bg-[var(--primary-strong)]"
-              >
-                ▶ Assistir agora
-              </Link>
-
-              <MyListButton movie={movie} />
-            </div>
-          </div>
-        </div>
+        <p className="mt-4 max-w-3xl leading-7 text-[var(--muted)]">
+          {movie.overview || "Nenhuma descrição disponível."}
+        </p>
       </section>
-
-      {similarMovies.length > 0 && (
-        <section className="mx-auto max-w-7xl px-0 pb-20 md:px-0">
-          <MovieRow
-            title="Você também pode gostar"
-            movies={similarMovies}
-          />
-        </section>
-      )}
     </main>
   );
 }

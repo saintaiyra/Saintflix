@@ -2,6 +2,7 @@ import { getApiUrl } from "@/lib/api";
 import MovieRow from "@/components/MovieRow";
 import Link from "next/link";
 import MyListButton from "@/components/MyListButton";
+import TrailerPlayer from "@/components/TrailerPlayer";
 import type { Movie } from "@/app/types/movies";
 
 type MoviePageProps = { params: Promise<{ id: string }> };
@@ -83,7 +84,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)] transition-colors duration-500">
-      <section className="relative min-h-[82vh] overflow-hidden bg-[var(--background)] pt-[74px]">
+      <section className="relative min-h-[56vh] overflow-hidden bg-[var(--background)] pt-[74px]">
         {backdrop && (
           <img
             src={backdrop}
@@ -98,7 +99,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-transparent to-transparent" />
 
-        <div className="relative z-10 mx-auto flex min-h-[82vh] max-w-7xl items-end px-5 pb-24 pt-20 md:px-10 lg:px-14">
+        <div className="relative z-10 mx-auto flex min-h-[56vh] max-w-[750px] items-end px-5 pb-24 pt-20 md:px-10 lg:px-14">
           <div className="max-w-4xl">
             {poster && (
               <img
@@ -134,6 +135,15 @@ export default async function MoviePage({ params }: MoviePageProps) {
               {movie.overview || "Nenhuma descrição disponível."}
             </p>
 
+            {data.trailer && (
+              <div className="mt-8 mb-6">
+                <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary)]">
+                  Trailer
+                </h3>
+                <TrailerPlayer videoKey={data.trailer.key} />
+              </div>
+            )}
+
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href={`/movie/${movie.id}/watch`}
@@ -149,7 +159,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
       </section>
 
       {similarMovies.length > 0 && (
-        <section className="mx-auto max-w-7xl px-0 pb-20 md:px-0">
+        <section className="mx-auto max-w-[750px] px-0 pb-20 md:px-0">
           <MovieRow
             title="Você também pode gostar"
             movies={similarMovies}

@@ -1,18 +1,6 @@
 import { getApiUrl } from "@/lib/api";
 import Link from "next/link";
-
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string | null;
-  overview?: string;
-  release_date?: string;
-  vote_average?: number;
-}
-
-interface SearchResponse {
-  results: Movie[];
-}
+import type { Movie, TMDBResponse } from "@/app/types/movies";
 
 type SearchPageProps = {
   searchParams: Promise<{ q?: string }>;
@@ -27,7 +15,7 @@ export default async function SearchPage({
   if (!query) {
     return (
       <main className="min-h-screen bg-[var(--background)] px-5 pb-20 pt-32 text-[var(--foreground)] md:px-10 lg:px-14">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-[750px]">
           <div className="flex items-center gap-3">
             <span className="h-7 w-1 rounded-full bg-[var(--primary)]" />
 
@@ -54,7 +42,7 @@ export default async function SearchPage({
   if (!response.ok) {
     return (
       <main className="min-h-screen bg-[var(--background)] px-5 pb-20 pt-32 text-[var(--foreground)] md:px-10 lg:px-14">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-[750px]">
           <h1 className="text-4xl font-black">
             Erro na busca
           </h1>
@@ -67,11 +55,11 @@ export default async function SearchPage({
     );
   }
 
-  const data: SearchResponse = await response.json();
+  const data: TMDBResponse<Movie> = await response.json();
 
   return (
     <main className="min-h-screen bg-[var(--background)] px-5 pb-24 pt-32 text-[var(--foreground)] transition-colors duration-500 md:px-10 lg:px-14">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-[750px]">
         <div className="flex items-center gap-3">
           <span className="h-7 w-1 rounded-full bg-[var(--primary)]" />
 
@@ -91,10 +79,10 @@ export default async function SearchPage({
             Nenhum filme encontrado.
           </p>
         ) : (
-          <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6">
+          <div className="mt-10 grid grid-cols-3 gap-x-3 gap-y-8 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7">
             {data.results.map((movie) => {
               const poster = movie.poster_path
-                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                ? `https://image.tmdb.org/t/p/w342${movie.poster_path}`
                 : null;
 
               return (
@@ -103,30 +91,44 @@ export default async function SearchPage({
                   href={`/movie/${movie.id}`}
                   className="group"
                 >
-                  <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] transition-all duration-500 group-hover:-translate-y-2 group-hover:border-[var(--primary)]">
+                  <div className="relative aspect-[2/3] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] transition-all duration-500 group-hover:-translate-y-1 group-hover:border-[var(--primary)] group-hover:shadow-[0_12px_30px_rgba(0,0,0,0.2)]">
                     {poster ? (
                       <img
                         src={poster}
                         alt={movie.title}
                         loading="lazy"
-                        className="aspect-[2/3] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="flex aspect-[2/3] items-center justify-center p-4 text-center text-sm text-[var(--muted)]">
+                      <div className="flex h-full items-center justify-center p-4 text-center text-sm text-[var(--muted)]">
                         Sem poster
                       </div>
                     )}
+
+                    {/* Gradiente no hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                   </div>
 
-                  <h2 className="mt-3 truncate font-medium">
-                    {movie.title}
-                  </h2>
-
-                  {movie.release_date && (
-                    <p className="mt-1 text-sm text-[var(--muted)]">
-                      {movie.release_date.slice(0, 4)}
+                  {/* Título embaixo - estilo Netflix */}
+                  <div className="mt-3 px-1 w-full">
+                    <p className="truncate text-sm font-medium text-[var(--foreground)] leading-tight group-hover:text-[var(--primary)] transition-colors duration-200">
+                      {movie.title}
                     </p>
-                  )}
+                    {movie.vote_average && (
+                      <p className="mt-1 flex items-center gap-1.5 text-xs text-[var(--muted)]">
+                        <span className="flex items-center gap-0.5">
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                          <span className="font-medium text-[var(--foreground)]">{movie.vote_average.toFixed(1)}</span>
+                        </span>
+                        {movie.release_date && (
+                          <>
+                            <span className="text-[var(--muted)]">·</span>
+                            <span className="text-[var(--muted)]">{movie.release_date.slice(0, 4)}</span>
+                          </>
+                        )}
+                      </p>
+                    )}
+                  </div>
                 </Link>
               );
             })}

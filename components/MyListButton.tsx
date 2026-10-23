@@ -1,44 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import type { Movie } from "@/app/types/movies";
+import { useMyList } from "@/hooks/useMyList";
 
 export default function MyListButton({ movie }: { movie: Movie }) {
-  const [isInList, setIsInList] = useState(false);
+  const { isInList, toggle, isLoaded } = useMyList();
 
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("my-list");
-      const movies: Movie[] = saved ? JSON.parse(saved) : [];
-      setIsInList(movies.some((item) => item.id === movie.id));
-    } catch {
-      setIsInList(false);
-    }
-  }, [movie.id]);
-
-  function toggleList() {
-    try {
-      const saved = localStorage.getItem("my-list");
-      const movies: Movie[] = saved ? JSON.parse(saved) : [];
-      const exists = movies.some((item) => item.id === movie.id);
-      const updated = exists
-        ? movies.filter((item) => item.id !== movie.id)
-        : [...movies, movie];
-
-      localStorage.setItem("my-list", JSON.stringify(updated));
-      setIsInList(!exists);
-    } catch {
-      setIsInList(false);
-    }
-  }
+  const movieIsInList = isInList(movie.id);
 
   return (
     <button
       type="button"
-      onClick={toggleList}
-      className="rounded-full border border-(--border) bg-(--card)/70 px-6 py-3 font-semibold text-foreground backdrop-blur-sm transition-all hover:border-(--primary) hover:text-(--primary)"
+      onClick={() => toggle(movie)}
+      disabled={!isLoaded}
+      className="rounded-full border border-(--border) bg-(--card)/70 px-6 py-3 font-semibold text-foreground backdrop-blur-sm transition-all hover:border-(--primary) hover:text-(--primary) disabled:opacity-50 disabled:cursor-not-allowed"
     >
-      {isInList ? "✓ Na minha lista" : "+ Minha Lista"}
+      {movieIsInList ? "✓ Na minha lista" : "+ Minha Lista"}
     </button>
   );
 }

@@ -10,6 +10,14 @@ function getRandomMovie<T>(movies: T[]): T | null {
   return movies[index];
 }
 
+const GENRE_IDS: Record<string, string> = {
+  action: "28",
+  comedy: "35",
+  horror: "27",
+  romance: "10749",
+  science_fiction: "878",
+};
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -40,17 +48,19 @@ export async function GET(request: Request) {
         url = "https://api.themoviedb.org/3/movie/top_rated";
         break;
 
+      case "upcoming":
+        url = "https://api.themoviedb.org/3/movie/upcoming";
+        break;
+
       case "action":
-        url = "https://api.themoviedb.org/3/discover/movie?with_genres=28";
-        break;
-
       case "comedy":
-        url = "https://api.themoviedb.org/3/discover/movie?with_genres=35";
-        break;
-
       case "horror":
-        url = "https://api.themoviedb.org/3/discover/movie?with_genres=27";
+      case "romance":
+      case "science_fiction": {
+        const genreId = GENRE_IDS[category];
+        url = `https://api.themoviedb.org/3/discover/movie?with_genres=${genreId}&language=pt-BR&sort_by=popularity.desc`;
         break;
+      }
 
       default:
         return NextResponse.json(
